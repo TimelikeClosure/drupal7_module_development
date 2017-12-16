@@ -1,0 +1,7 @@
+<?php
+
+/**
+ * @file
+ * Collect the titles from a Feed Item node via NYT RSS Feed import and display them in a block.
+ */
+

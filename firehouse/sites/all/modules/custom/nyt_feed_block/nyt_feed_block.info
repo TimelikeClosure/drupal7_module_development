@@ -1,0 +1,9 @@
+name = New York Times Feed Block
+description = "Provides a block that shows imported headlines from a New York Times Feed"
+package = Other
+core = 7.x
+version = 1.x-dev
+configure = admin/config/content/nyt_feed_block
+dependencies[] = block
+dependencies[] = feeds
+files[] = nyt_feed_block.module

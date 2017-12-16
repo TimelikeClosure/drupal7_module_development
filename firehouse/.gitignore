@@ -6,15 +6,18 @@ sites/*/files
 sites/*/private
 
 # drupal base files
-/*.php
-/*.txt
-/.htaccess
-/includes/*
-/misc/*
-/modules/*
-/profiles/*
-/scripts/*
-/themes/*
-/web.config
+*.php
+*.txt
+.htaccess
+includes/*
+misc/*
+modules/*
+profiles/*
+scripts/*
+themes/*
+web.config
 
 # added modules and themes
+!sites/all/modules/contrib/modules.md
+!sites/all/modules/custom/
+
