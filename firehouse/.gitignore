@@ -1,0 +1,20 @@
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
+
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
+
+# drupal base files
+/*.php
+/*.txt
+/.htaccess
+/includes/*
+/misc/*
+/modules/*
+/profiles/*
+/scripts/*
+/themes/*
+/web.config
+
+# added modules and themes
