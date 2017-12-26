@@ -5,3 +5,30 @@
  * Collect the titles from a Feed Item node via NYT RSS Feed import and display them in a block.
  */
 
+/**
+ * Implements hook_menu()
+ */
+function nyt_feed_block_menu(){
+  $items['admin/config/content/nyt_feed_block'] = array(
+    'title' => 'New York Times Feed Block Settings',
+    'description' => 'Administer the New York Times Feed Block settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array(
+      'nyt_feed_block_settings_form',
+    ),
+    'access arguments' => array(
+      'manage new york times feed block settings',
+    ),
+    'file' => 'nyt_feed_block.admin.inc',
+  );
+  $items['admin/reports/nyt_feed_block'] = array(
+    'title' => 'New York Times Feed Block Posts',
+    'description' => 'View all the New York Times Feed imported posts.',
+    'page callback' => 'nyt_feed_block_posts',
+    'access arguments' => array(
+      'view new york times feed block posts',
+    ),
+    'file' => 'nyt_feed_block.admin.inc',
+  );
+  return $items;
+}
