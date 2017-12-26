@@ -32,3 +32,22 @@ function nyt_feed_block_menu(){
   );
   return $items;
 }
+
+/**
+ * Implements hook_permission()
+ */
+function nyt_feed_block_permission(){
+  $permissions['view new york times feed block posts'] = array(
+    'title' => t('View New York Times Feed Block Posts'),
+    'description' => t('View all the New York Times Feed imported posts on the main NYT posts page.'),
+  );
+  $permissions['change rss feed used in new york times feed'] = array(
+    'title' => t('Change the RSS feed used in the New York Times Feed'),
+    'description' => t('Add new RSS feed to be imported.'),
+  );
+  $permissions['manage new york time feed block settings'] = array(
+    'title' => t('Manage New York Times Feed settings'),
+    'description' => t('Allow user to manange the New York Times Feed block settings page.'),
+  );
+  return $permissions;
+}
