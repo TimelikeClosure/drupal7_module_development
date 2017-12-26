@@ -7,3 +7,4 @@ configure = admin/config/content/nyt_feed_block
 dependencies[] = block
 dependencies[] = feeds
 files[] = nyt_feed_block.module
+files[] = nyt_feed_block.admin.inc

@@ -2,8 +2,8 @@
 
 /**
  * @file
- * 
- */
+ * Provides the administrative related functions for the New York Times Feed Block module.
+*/
 
 /**
  * stub
