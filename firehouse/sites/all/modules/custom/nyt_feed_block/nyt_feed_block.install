@@ -1,0 +1,52 @@
+<?php
+
+/* 
+ * @file
+ * Defines and manages New York Times Feed Block module schema
+ */
+
+/**
+ * Implements hook_schema()
+ */
+function nyt_feed_block_schema(){
+  $schema['nyt_feeds_block'] = array(
+    'description' => 'The base table for the New York Times Feeds Block module',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The primary identifier for the entry.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that added the entry',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'description' => 'The {node}.nid that this entry was added on.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'description' => 'Timestamp for when the NYT Feed Block module data was created.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('id'),
+    'unique keys' => array(
+      'node_user' => array('nid', 'uid'),
+    ),
+    'indexes' => array(
+      'node' => array('nid'),
+    ),
+  );
+  return $schema;
+}
