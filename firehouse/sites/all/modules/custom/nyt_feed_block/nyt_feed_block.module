@@ -55,7 +55,7 @@ function nyt_feed_block_permission(){
 /**
  * Adds a checkbox to the Feeds Item nodes to allow for the specific feed item to be shown in the New York Times Feed block
  */
-function nyt_feed_block_form_alter(&$form, $form_state, $form_id){
+function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id){
   //dsm($form_id);  // print form ID to messages
   $node = $form['#node'];
   //Perform our check to see if we should be performing an action
