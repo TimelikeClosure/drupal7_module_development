@@ -49,52 +49,6 @@ function nyt_feed_block_settings_form_validate($form, &$form_state) {
 }
 
 /**
- * Determine if a node is set
- *
- * @param int $nid
- *  The node id of the node in question
- *
- * @return Boolean
- */
-function nyt_feed_block_get_node_enabled($nid) {
-  if (is_numeric($nid)) {
-    $result = db_query('SELECT nid FROM {fb_feed_block_enabled} WHERE nid = :nid',
-      array('nid' => $nid))->fetchField();
-    if ($result) {
-      return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Add an entry for a node's NYT Feed Block setting
- *
- * @param int $nid
- *  The node id of the node in question
- */
-function nyt_feed_block_set_node_enabled($nid) {
-  if (is_numeric($nid)) {
-    if (!nyt_feed_block_get_node_enabled($nid)) {
-      db_insert('nyt_feed_block_enabled')
-        ->fields(array('nid' => $nid))
-        ->execute();
-    }
-  }
-}
-
-/**
- * stub
- */
-function nyt_feed_block_delete_node_enabled($nid) {
-  if (is_numeric($nid)) {
-    db_delete('nyt_feed_block_enabled')
-      ->condition('nid', $nid)
-      ->execute();
-  }
-}
-
-/**
  * stub
  */
 function nyt_feed_block_posts() {
