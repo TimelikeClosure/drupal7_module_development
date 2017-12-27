@@ -51,3 +51,30 @@ function nyt_feed_block_permission(){
   );
   return $permissions;
 }
+
+/**
+ * Adds a checkbox to the Feeds Item nodes to allow for the specific feed item to be shown in the New York Times Feed block
+ */
+function nyt_feed_block_form_alter(&$form, $form_state, $form_id){
+  //dsm($form_id);  // print form ID to messages
+  $node = $form['#node'];
+  //Perform our check to see if we should be performing an action
+  $types = variable_get('nyt_feed_block_types', array());
+  //Check if this node type is enabled for the NYT Feeds block
+  //and that user has access to the per-node settings
+  if ($types[$node->type] && user_access('manage new york times feed block settings')){
+    //Add a new fieldset with a checkbox for per-node setting
+    $form['nyt_feed_block'] = array(
+      '#title' => t('NYT Feed Block'),
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+      '#group' => 'additional_settings',
+    );
+    $form['nyt_feed_block']['fb_feed_block_enabled'] = array(
+      '#title' => t('Allow this node to be posted to the NYT block'),
+      '#type' => 'checkbox',
+      '#default_value' => isset($node->nyt_feed_block_enabled) ? $node->nyt_feed_block_enabled : FALSE,
+    );
+  }
+}
