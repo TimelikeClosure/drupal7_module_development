@@ -85,7 +85,7 @@ function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id){
 function nyt_feed_block_node_load($nodes, $types){
   foreach ($nodes as $nid => $node){
     //Add nyt_feed_block data to the node object when it is loaded.
-    $node->nyt_feed_block_enabled = nyt_feed_block_get_node_enabled($node->nid)
+    $node->nyt_feed_block_enabled = nyt_feed_block_get_node_enabled($node->nid);
   }
 }
 
@@ -97,4 +97,25 @@ function nyt_feed_block_node_insert($node){
     //If NYT Feed Block is enabled, store the record
     nyt_feed_block_set_node_enabled($node->nid);
   }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function nyt_feed_block_node_update($node){
+  if($node->nyt_feed_blcck_enabled){
+    //If NYT Feed Block is enabled, store the record
+    nyt_feed_block_set_node_enabled($node->nid);
+  } else {
+    //If NYT Feed Block is disabled, delete the record
+    nyt_feed_block_delete_node_enabled($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function nyt_feed_block_node_delete($node){
+  //Delete the record when the node is deleted
+  nyt_feed_block_delete_node_enabled($node->nid);
 }

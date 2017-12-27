@@ -51,6 +51,27 @@ function nyt_feed_block_settings_form_validate($form, &$form_state) {
 /**
  * stub
  */
+function nyt_feed_block_get_node_enabled($nid) {
+  
+}
+
+/**
+ * stub
+ */
+function nyt_feed_block_set_node_enabled($nid) {
+
+}
+
+/**
+ * stub
+ */
+function nyt_feed_block_delete_node_enabled($nid) {
+  
+}
+
+/**
+ * stub
+ */
 function nyt_feed_block_posts() {
 
 }
