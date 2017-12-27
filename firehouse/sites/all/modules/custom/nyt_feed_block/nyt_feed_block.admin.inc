@@ -35,6 +35,19 @@ function nyt_feed_block_settings_form() {
   return system_settings_form($form);
 }
 
+function nyt_feed_block_settings_form_validate($form, &$form_state) {
+
+  $setting = 'nyt_feed_block_maxposts';
+  $maxposts = $form_state['values'][$setting];
+  if (!is_numeric($maxposts)) {
+    form_set_error($setting,
+            t('You must enter an integer for the maximum number of links.'));
+  }
+  else if ($maxposts <= 0) {
+    form_set_error($setting, t('Maximum number of links must be positive.'));
+  }
+}
+
 /**
  * stub
  */
