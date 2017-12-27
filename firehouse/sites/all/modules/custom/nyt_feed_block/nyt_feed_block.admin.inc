@@ -22,6 +22,16 @@ function nyt_feed_block_settings_form() {
     '#required' => TRUE,
   );
 
+  $setting = 'nyt_feed_block_types';
+  $form[$setting] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('The content types to enable NYT Feed Block for'),
+    '#description' => t('On the specified content types a NYT Feed Block option will be enabled.'),
+    '#options' => node_type_get_names(),
+    '#default_value' => variable_get($setting, array()),
+    '#required' => TRUE,
+  );
+
   return system_settings_form($form);
 }
 
