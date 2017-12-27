@@ -87,7 +87,11 @@ function nyt_feed_block_set_node_enabled($nid) {
  * stub
  */
 function nyt_feed_block_delete_node_enabled($nid) {
-  
+  if (is_numeric($nid)) {
+    db_delete('nyt_feed_block_enabled')
+      ->condition('nid', $nid)
+      ->execute();
+  }
 }
 
 /**
