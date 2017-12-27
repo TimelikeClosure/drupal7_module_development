@@ -41,7 +41,7 @@ function nyt_feed_block_settings_form_validate($form, &$form_state) {
   $maxposts = $form_state['values'][$setting];
   if (!is_numeric($maxposts)) {
     form_set_error($setting,
-            t('You must enter an integer for the maximum number of links.'));
+      t('You must enter an integer for the maximum number of links.'));
   }
   else if ($maxposts <= 0) {
     form_set_error($setting, t('Maximum number of links must be positive.'));
@@ -49,17 +49,38 @@ function nyt_feed_block_settings_form_validate($form, &$form_state) {
 }
 
 /**
- * stub
+ * Determine if a node is set
+ *
+ * @param int $nid
+ *  The node id of the node in question
+ *
+ * @return Boolean
  */
 function nyt_feed_block_get_node_enabled($nid) {
-  
+  if (is_numeric($nid)) {
+    $result = db_query('SELECT nid FROM {fb_feed_block_enabled} WHERE nid = :nid',
+      array('nid' => $nid))->fetchField();
+    if ($result) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
- * stub
+ * Add an entry for a node's NYT Feed Block setting
+ *
+ * @param int $nid
+ *  The node id of the node in question
  */
 function nyt_feed_block_set_node_enabled($nid) {
-
+  if (is_numeric($nid)) {
+    if (!nyt_feed_block_get_node_enabled($nid)) {
+      db_insert('nyt_feed_block_enabled')
+        ->fields(array('nid' => $nid))
+        ->execute();
+    }
+  }
 }
 
 /**
