@@ -168,3 +168,15 @@ function nyt_feed_block_delete_node_enabled($nid) {
       ->execute();
   }
 }
+
+/**
+ * Implements hook_block_info()
+ * This hook defines the Block info that shows the block on the main Drupal blocks admin screen
+ */
+function nyt_feed_block_block_info(){
+  $block['posts'] = array(
+    'info' => t('New York Times Posts'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $block;
+}
