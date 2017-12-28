@@ -200,6 +200,22 @@ function nyt_feed_block_block_view($delta){
  */
 function nyt_feed_block_block_contents($delta){
   $content = array();
-
+  switch($delta){
+    case 'posts':
+      if (user_access('access content')){
+        //  if ($node->nyt_feed_block_enabled)
+        $result = db_query('SELECT nid, title, type FROM {node} WHERE type=\'feed_item\'');
+        $items = array();
+        foreach($result as $row){
+          $items[] = l($row->title, 'node/'. $row->nid . '/');
+        }
+        $content['#markup'] = theme('item_list', array('items' => $items));
+//        $content['#markup'] = drupal_render(array(
+//          '#theme' => 'item_list',
+//          '#items' => $items,
+//        ));
+      }
+      break;
+  }
   return $content;
 }
