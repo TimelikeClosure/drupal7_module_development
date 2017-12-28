@@ -180,3 +180,26 @@ function nyt_feed_block_block_info(){
   );
   return $block;
 }
+
+/**
+ * Implements hook_block_view()
+ */
+function nyt_feed_block_block_view($delta){
+  $block = array();
+  switch($delta){
+    case 'posts':
+      $block['subject'] = t('New York Times Feed Block Posts');
+      $block['content'] = nyt_feed_block_block_contents($delta);
+      break;
+  }
+  return $block;
+}
+
+/**
+ * stub
+ */
+function nyt_feed_block_block_contents($delta){
+  $content = array();
+
+  return $content;
+}
