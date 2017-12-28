@@ -205,10 +205,17 @@ function nyt_feed_block_posts_block_view(&$block){
     $block['subject'] = t('New York Times Feed Block Posts');
     $maxPosts = variable_get('nyt_feed_block_maxposts', 3);
     $contentTypes = variable_get('nyt_feed_block_types', array());
-    $query = 'SELECT n.nid AS nid, n.title AS title FROM {nyt_feed_block_enabled} AS nfbe JOIN {node} AS n ON n.nid=nfbe.nid WHERE n.type IN (:types) ORDER BY n.created DESC';
-    $queryParams = array(':types' => $contentTypes);
-//    $result = db_query($query, $queryParams);
-    $result = db_query_range($query, 0, $maxPosts, $queryParams);
+
+    $query = db_select('node', 'n')->addTag('node_access');
+    $query->join('nyt_feed_block_enabled', 'nfbe', 'nfbe.nid=n.nid');
+    $query->addField('n', 'nid', 'nid');
+    $query->addField('n', 'title', 'title');
+    $query
+      ->condition('n.type', $contentTypes, 'IN')
+      ->orderBy('n.created', 'DESC')
+      ->range(0, $maxPosts);
+    $result = $query->execute();
+
     $items = array();
     foreach($result as $row){
       $items[] = l($row->title, 'node/'. $row->nid . '/');
