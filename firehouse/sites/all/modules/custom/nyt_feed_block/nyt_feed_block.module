@@ -93,7 +93,7 @@ function nyt_feed_block_node_load($nodes, $types){
  * Implements hook_node_insert().
  */
 function nyt_feed_block_node_insert($node){
-  if ($node->nyt_feed_block_enabled){
+  if (property_exists($node, 'nyt_feed_block_enabled') && $node->nyt_feed_block_enabled){
     //If NYT Feed Block is enabled, store the record
     nyt_feed_block_set_node_enabled($node->nid);
   }
@@ -185,37 +185,43 @@ function nyt_feed_block_block_info(){
  * Implements hook_block_view()
  */
 function nyt_feed_block_block_view($delta){
-  $block = array();
+  $block = array(
+    'subject' => NULL,
+    'content' => NULL,
+  );
   switch($delta){
     case 'posts':
-      $block['subject'] = t('New York Times Feed Block Posts');
-      $block['content'] = nyt_feed_block_block_contents($delta);
+      nyt_feed_block_posts_block_view($block);
       break;
   }
   return $block;
 }
 
 /**
- * stub
+ * Creates view for posts block
  */
-function nyt_feed_block_block_contents($delta){
-  $content = array();
-  switch($delta){
-    case 'posts':
-      if (user_access('access content')){
-        //  if ($node->nyt_feed_block_enabled)
-        $result = db_query('SELECT nid, title, type FROM {node} WHERE type=\'feed_item\'');
-        $items = array();
-        foreach($result as $row){
-          $items[] = l($row->title, 'node/'. $row->nid . '/');
-        }
-        $content['#markup'] = theme('item_list', array('items' => $items));
-//        $content['#markup'] = drupal_render(array(
-//          '#theme' => 'item_list',
-//          '#items' => $items,
-//        ));
-      }
-      break;
+function nyt_feed_block_posts_block_view(&$block){
+  if (user_access('view new york times feed block posts')){
+    $block['subject'] = t('New York Times Feed Block Posts');
+    $maxPosts = variable_get('nyt_feed_block_maxposts', 3);
+    $contentTypes = variable_get('nyt_feed_block_types', array());
+    $query = 'SELECT n.nid AS nid, n.title AS title FROM {nyt_feed_block_enabled} AS nfbe JOIN {node} AS n ON n.nid=nfbe.nid WHERE n.type IN (:types) ORDER BY n.created DESC';
+    $queryParams = array(':types' => $contentTypes);
+//    $result = db_query($query, $queryParams);
+    $result = db_query_range($query, 0, $maxPosts, $queryParams);
+    $items = array();
+    foreach($result as $row){
+      $items[] = l($row->title, 'node/'. $row->nid . '/');
+    }
+    $block['content']['#markup'] = theme('item_list', array('items' => $items));
+//    $block['content']['#markup'] = drupal_render(array(
+//      '#theme' => 'item_list',
+//      '#items' => $items,
+//    ));
+  } else {
+    $block['subject'] = '';
+    $block['content'] = '';
   }
-  return $content;
+
+  return $block;
 }
