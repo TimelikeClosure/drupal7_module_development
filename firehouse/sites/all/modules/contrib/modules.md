@@ -11,3 +11,4 @@
 
 #### Dev Dependencies
 - devel
+- coder

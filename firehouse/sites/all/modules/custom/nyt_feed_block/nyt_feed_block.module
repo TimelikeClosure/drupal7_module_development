@@ -8,7 +8,7 @@
 /**
  * Implements hook_menu()
  */
-function nyt_feed_block_menu(){
+function nyt_feed_block_menu() {
   $items['admin/config/content/nyt_feed_block'] = array(
     'title' => 'New York Times Feed Block Settings',
     'description' => 'Administer the New York Times Feed Block settings.',
@@ -36,7 +36,7 @@ function nyt_feed_block_menu(){
 /**
  * Implements hook_permission()
  */
-function nyt_feed_block_permission(){
+function nyt_feed_block_permission() {
   $permissions['view new york times feed block posts'] = array(
     'title' => t('View New York Times Feed Block Posts'),
     'description' => t('View all the New York Times Feed imported posts on the main NYT posts page.'),
@@ -55,14 +55,14 @@ function nyt_feed_block_permission(){
 /**
  * Adds a checkbox to the Feeds Item nodes to allow for the specific feed item to be shown in the New York Times Feed block
  */
-function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id){
+function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id) {
   //dsm($form_id);  // print form ID to messages
   $node = $form['#node'];
   //Perform our check to see if we should be performing an action
   $types = variable_get('nyt_feed_block_types', array());
   //Check if this node type is enabled for the NYT Feeds block
   //and that user has access to the per-node settings
-  if ($types[$node->type] && user_access('manage new york times feed block settings')){
+  if ($types[$node->type] && user_access('manage new york times feed block settings')) {
     //Add a new fieldset with a checkbox for per-node setting
     $form['nyt_feed_block'] = array(
       '#title' => t('NYT Feed Block'),
@@ -82,8 +82,8 @@ function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id){
 /**
  * Implements hook_node_load().
  */
-function nyt_feed_block_node_load($nodes, $types){
-  foreach ($nodes as $nid => $node){
+function nyt_feed_block_node_load($nodes, $types) {
+  foreach ($nodes as $nid => $node) {
     //Add nyt_feed_block data to the node object when it is loaded.
     $node->nyt_feed_block_enabled = nyt_feed_block_get_node_enabled($node->nid);
   }
@@ -92,8 +92,8 @@ function nyt_feed_block_node_load($nodes, $types){
 /**
  * Implements hook_node_insert().
  */
-function nyt_feed_block_node_insert($node){
-  if (property_exists($node, 'nyt_feed_block_enabled') && $node->nyt_feed_block_enabled){
+function nyt_feed_block_node_insert($node) {
+  if (property_exists($node, 'nyt_feed_block_enabled') && $node->nyt_feed_block_enabled) {
     //If NYT Feed Block is enabled, store the record
     nyt_feed_block_set_node_enabled($node->nid);
   }
@@ -102,11 +102,12 @@ function nyt_feed_block_node_insert($node){
 /**
  * Implements hook_node_update().
  */
-function nyt_feed_block_node_update($node){
-  if($node->nyt_feed_block_enabled){
+function nyt_feed_block_node_update($node) {
+  if ($node->nyt_feed_block_enabled) {
     //If NYT Feed Block is enabled, store the record
     nyt_feed_block_set_node_enabled($node->nid);
-  } else {
+  }
+  else {
     //If NYT Feed Block is disabled, delete the record
     nyt_feed_block_delete_node_enabled($node->nid);
   }
@@ -115,7 +116,7 @@ function nyt_feed_block_node_update($node){
 /**
  * Implements hook_node_delete().
  */
-function nyt_feed_block_node_delete($node){
+function nyt_feed_block_node_delete($node) {
   //Delete the record when the node is deleted
   nyt_feed_block_delete_node_enabled($node->nid);
 }
@@ -173,7 +174,7 @@ function nyt_feed_block_delete_node_enabled($nid) {
  * Implements hook_block_info()
  * This hook defines the Block info that shows the block on the main Drupal blocks admin screen
  */
-function nyt_feed_block_block_info(){
+function nyt_feed_block_block_info() {
   $block['posts'] = array(
     'info' => t('New York Times Posts'),
     'cache' => DRUPAL_NO_CACHE,
@@ -184,12 +185,12 @@ function nyt_feed_block_block_info(){
 /**
  * Implements hook_block_view()
  */
-function nyt_feed_block_block_view($delta){
+function nyt_feed_block_block_view($delta) {
   $block = array(
     'subject' => NULL,
     'content' => NULL,
   );
-  switch($delta){
+  switch ($delta) {
     case 'posts':
       nyt_feed_block_posts_block_view($block);
       break;
@@ -200,32 +201,33 @@ function nyt_feed_block_block_view($delta){
 /**
  * Creates view for posts block
  */
-function nyt_feed_block_posts_block_view(&$block){
-  if (user_access('view new york times feed block posts')){
+function nyt_feed_block_posts_block_view(&$block) {
+  if (user_access('view new york times feed block posts')) {
     $block['subject'] = t('New York Times Feed Block Posts');
-    $maxPosts = variable_get('nyt_feed_block_maxposts', 3);
-    $contentTypes = variable_get('nyt_feed_block_types', array());
+    $max_posts = variable_get('nyt_feed_block_maxposts', 3);
+    $content_types = variable_get('nyt_feed_block_types', array());
 
     $query = db_select('node', 'n')->addTag('node_access');
     $query->join('nyt_feed_block_enabled', 'nfbe', 'nfbe.nid=n.nid');
     $query->addField('n', 'nid', 'nid');
     $query->addField('n', 'title', 'title');
     $query
-      ->condition('n.type', $contentTypes, 'IN')
+      ->condition('n.type', $content_types, 'IN')
       ->orderBy('n.created', 'DESC')
-      ->range(0, $maxPosts);
+      ->range(0, $max_posts);
     $result = $query->execute();
 
     $items = array();
-    foreach($result as $row){
-      $items[] = l($row->title, 'node/'. $row->nid . '/');
+    foreach ($result as $row) {
+      $items[] = l($row->title, "node/{$row->nid}/");
     }
     $block['content']['#markup'] = theme('item_list', array('items' => $items));
 //    $block['content']['#markup'] = drupal_render(array(
 //      '#theme' => 'item_list',
 //      '#items' => $items,
 //    ));
-  } else {
+  }
+  else {
     $block['subject'] = '';
     $block['content'] = '';
   }

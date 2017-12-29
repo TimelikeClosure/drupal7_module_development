@@ -8,7 +8,7 @@
 /**
  * Implements hook_schema()
  */
-function nyt_feed_block_schema(){
+function nyt_feed_block_schema() {
   $schema['nyt_feed_block'] = array(
     'description' => 'The base table for the New York Times Feeds Block module',
     'fields' => array(
@@ -65,7 +65,7 @@ function nyt_feed_block_schema(){
 /**
  * Implements hook_uninstall()
  */
-function nyt_feed_block_uninstall(){
+function nyt_feed_block_uninstall() {
   variable_del('nyt_feed_block_maxposts');
   variable_del('nyt_feed_block_types');
 }

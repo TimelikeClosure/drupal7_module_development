@@ -3,7 +3,7 @@
 /**
  * @file
  * Provides the administrative related functions for the New York Times Feed Block module.
-*/
+ */
 
 /**
  * Defines the New York Times Feeds Block admin settings form
@@ -43,7 +43,7 @@ function nyt_feed_block_settings_form_validate($form, &$form_state) {
     form_set_error($setting,
       t('You must enter an integer for the maximum number of links.'));
   }
-  else if ($maxposts <= 0) {
+  elseif ($maxposts <= 0) {
     form_set_error($setting, t('Maximum number of links must be positive.'));
   }
 }
