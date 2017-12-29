@@ -39,7 +39,7 @@ class NytFeedBlockTestCase extends DrupalWebTestCase {
 
     // Check that no NYT Feed Block settings appear on the Basic Page node edit form.
     $this->drupalGet('node/add/page');
-    $this->assertNoText(t('Allow this node to be posted to the NYT Block'), 'The NYT Feed Block settings were not found on add page before enabled.');
+    $this->assertNoText(t('Allow this node to be posted to the NYT block'), 'The NYT Feed Block settings were not found on add page before enabled.');
 
     // Change the settings to enable NYT Feed Block on pages.
     $edit = array('nyt_feed_block_types[page]' => TRUE);
@@ -47,6 +47,6 @@ class NytFeedBlockTestCase extends DrupalWebTestCase {
     $this->drupalPost('admin/config/content/nyt_feed_block', $edit, t('Save configuration'));
     //Check that the NYT Feed Block settings appear when crating a new page.
     $this->drupalGet('node/add/page');
-    $this->assertText(t('Allow this node to be posted to the NYT Block'), 'The NYT Feed Block settings were found on add page after enabled.');
+    $this->assertText(t('Allow this node to be posted to the NYT block'), 'The NYT Feed Block settings were found on add page after enabled.');
   }
 }
