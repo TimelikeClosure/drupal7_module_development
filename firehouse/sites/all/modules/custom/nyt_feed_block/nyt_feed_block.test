@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file
+ * Tests for nyt_feed_block.module.
+ */
+
+/**
+ * Provides automated tests for the NYT Feed Block module.
+ */
+class NytFeedBlockTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'NYT Feed Block functionality',
+      'description' => 'The the NYT Feed Block Settings Form functionality.',
+      'group' => 'NYT Feed Block',
+    );
+  }
+
+  /**
+   * Enable modules and create users with specific permissions.
+   */
+  function setUp() {
+    parent::setUp('nyt_feed_block');
+    // Create users.
+    $this->admin_user = $this->drupalCreateUser(array(
+      'manage new york time feed block settings',
+      'create page content',
+    ));
+//    $this->web_user = $this->drupalCreateUser(array());
+  }
+
+  /**
+   * Tests disabling and re-enabling the Forum module.
+   */
+  function testNytFeedBlockSettings() {
+    $this->drupalLogin($this->admin_user);
+
+    // Check that no NYT Feed Block settings appear on the Basic Page node edit form.
+    $this->drupalGet('node/add/page');
+    $this->assertNoText(t('Allow this node to be posted to the NYT Block'), 'The NYT Feed Block settings were not found on add page before enabled.');
+
+    // Change the settings to enable NYT Feed Block on pages.
+    $edit = array('nyt_feed_block_types[page]' => TRUE);
+    //$edit = array();
+    $this->drupalPost('admin/config/content/nyt_feed_block', $edit, t('Save configuration'));
+    //Check that the NYT Feed Block settings appear when crating a new page.
+    $this->drupalGet('node/add/page');
+    $this->assertText(t('Allow this node to be posted to the NYT Block'), 'The NYT Feed Block settings were found on add page after enabled.');
+  }
+}
