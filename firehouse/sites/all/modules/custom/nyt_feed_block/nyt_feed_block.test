@@ -25,7 +25,7 @@ class NytFeedBlockTestCase extends DrupalWebTestCase {
     parent::setUp('nyt_feed_block');
     // Create users.
     $this->admin_user = $this->drupalCreateUser(array(
-      'manage new york time feed block settings',
+      'manage new york times feed block settings',
       'create page content',
     ));
 //    $this->web_user = $this->drupalCreateUser(array());

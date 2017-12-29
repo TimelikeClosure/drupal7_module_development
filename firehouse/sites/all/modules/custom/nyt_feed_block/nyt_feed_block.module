@@ -45,7 +45,7 @@ function nyt_feed_block_permission() {
     'title' => t('Change the RSS feed used in the New York Times Feed'),
     'description' => t('Add new RSS feed to be imported.'),
   );
-  $permissions['manage new york time feed block settings'] = array(
+  $permissions['manage new york times feed block settings'] = array(
     'title' => t('Manage New York Times Feed settings'),
     'description' => t('Allow user to manange the New York Times Feed block settings page.'),
   );
@@ -62,7 +62,7 @@ function nyt_feed_block_form_node_form_alter(&$form, $form_state, $form_id) {
   $types = variable_get('nyt_feed_block_types', array());
   //Check if this node type is enabled for the NYT Feeds block
   //and that user has access to the per-node settings
-  if ($types[$node->type] && user_access('manage new york times feed block settings')) {
+  if (!empty($types[$node->type]) && user_access('manage new york times feed block settings')) {
     //Add a new fieldset with a checkbox for per-node setting
     $form['nyt_feed_block'] = array(
       '#title' => t('NYT Feed Block'),
